@@ -30,7 +30,7 @@
       background-color: #222;
       padding: 10px;
       border-radius: 8px;
-      max-width: 100%;
+      max-width: 600px;
       width: 100%;
       box-sizing: border-box;
       flex-wrap: wrap;
@@ -119,14 +119,18 @@
         font-size: 15px;
       }
 
-      .info {
-        font-size: 13px;
-        max-width: 100%;
+      .formats {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
       }
 
-      .formats {
-        flex-direction: column;
+      .formats label {
+        min-width: 90px;
+        display: flex;
         align-items: center;
+        justify-content: flex-start;
       }
     }
   </style>
