@@ -14,10 +14,13 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
     }
 
     h1 {
       margin-bottom: 20px;
+      text-align: center;
     }
 
     .search-box {
@@ -60,14 +63,73 @@
       text-align: center;
       max-width: 600px;
     }
+
+    .formats {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .formats label {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .formats input[type="checkbox"] {
+      margin-right: 5px;
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 480px) {
+      .search-box {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        font-size: 15px;
+      }
+
+      button {
+        width: 100%;
+        border-radius: 5px;
+        font-size: 15px;
+      }
+
+      .info {
+        font-size: 13px;
+        max-width: 100%;
+      }
+
+      .formats {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>BookFindr</h1>
+  <h1>Busca de Livros</h1>
   <div class="search-box">
     <input type="text" id="search-box" placeholder="Digite o nome do livro..." />
     <button id="search-button">🔍</button>
   </div>
+
+  <div class="formats">
+    <label><input type="checkbox" value="pdf" checked> .pdf</label>
+    <label><input type="checkbox" value="epub"> .epub</label>
+    <label><input type="checkbox" value="mobi"> .mobi</label>
+    <label><input type="checkbox" value="txt"> .txt</label>
+    <label><input type="checkbox" value="doc"> .doc</label>
+  </div>
+
   <div class="info">
     A busca será feita com filtros inteligentes no Google. Sites: Google Drive, Academia.edu, DocPlayer, Scribd, e outros.
   </div>
@@ -78,18 +140,54 @@
 
     function search() {
       const query = searchInput.value.trim();
-      if (query !== "") {
-        const dorks = [
+      if (query === "") return;
+
+      const selectedFormats = Array.from(document.querySelectorAll('.formats input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+      if (selectedFormats.length === 0) {
+        alert("Selecione pelo menos um tipo de arquivo.");
+        return;
+      }
+
+      const formatDorks = {
+        pdf: [
           'filetype:pdf',
           'site:drive.google.com',
           'site:academia.edu',
           'site:docplayer.com.br',
           'site:scribd.com'
-        ];
-        const fullQuery = `${query} (${dorks.join(' OR ')})`;
-        const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(fullQuery)}`;
-        window.open(searchUrl, "_blank");
-      }
+        ],
+        epub: [
+          'filetype:epub',
+          'site:epub.pub',
+          'site:epubbooks.com',
+          'site:pdfdrive.com'
+        ],
+        mobi: [
+          'filetype:mobi',
+          'site:pdfdrive.com',
+          'site:booksc.org',
+          'site:library.lol'
+        ],
+        txt: [
+          'filetype:txt',
+          'site:archive.org',
+          'site:textfiles.com',
+          'site:pastebin.com'
+        ],
+        doc: [
+          'filetype:doc OR filetype:docx',
+          'site:docplayer.com.br',
+          'site:academia.edu',
+          'site:scribd.com'
+        ]
+      };
+
+      const dorks = selectedFormats.flatMap(format => formatDorks[format] || []);
+      const fullQuery = `${query} (${dorks.join(' OR ')})`;
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(fullQuery)}`;
+      window.open(searchUrl, "_blank");
     }
 
     searchButton.addEventListener('click', search);
