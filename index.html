@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BookFindr</title>
   <style>
     body {
@@ -30,10 +30,12 @@
       background-color: #222;
       padding: 10px;
       border-radius: 8px;
+      max-width: 100%;
+      width: 400px;
     }
 
     input[type="text"] {
-      width: 350px;
+      width: 100%;
       padding: 10px;
       border: none;
       border-radius: 5px 0 0 5px;
@@ -51,10 +53,16 @@
       color: white;
       font-size: 16px;
       cursor: pointer;
+      transition: background-color 0.2s ease;
+      user-select: none;
     }
 
     button:hover {
       background-color: #555;
+    }
+
+    button:active {
+      background-color: #666;
     }
 
     .info {
@@ -77,11 +85,14 @@
       display: flex;
       align-items: center;
       font-size: 14px;
+      cursor: pointer;
+      user-select: none;
     }
 
     .formats input[type="checkbox"] {
       margin-right: 5px;
       transform: scale(1.2);
+      cursor: pointer;
     }
 
     @media (max-width: 480px) {
@@ -119,16 +130,21 @@
 <body>
   <h1>BookFindr</h1>
   <div class="search-box">
-    <input type="text" id="search-box" placeholder="Digite o nome do livro..." />
-    <button id="search-button">🔍</button>
+    <input
+      type="text"
+      id="search-box"
+      placeholder="Digite o nome do livro..."
+      aria-label="Campo para digitar o nome do livro"
+    />
+    <button id="search-button" aria-label="Botão para iniciar busca">🔍</button>
   </div>
 
   <div class="formats">
-    <label><input type="checkbox" value="pdf" checked> .pdf</label>
-    <label><input type="checkbox" value="epub"> .epub</label>
-    <label><input type="checkbox" value="mobi"> .mobi</label>
-    <label><input type="checkbox" value="txt"> .txt</label>
-    <label><input type="checkbox" value="doc"> .doc</label>
+    <label><input type="checkbox" value="pdf" checked /> .pdf</label>
+    <label><input type="checkbox" value="epub" /> .epub</label>
+    <label><input type="checkbox" value="mobi" /> .mobi</label>
+    <label><input type="checkbox" value="txt" /> .txt</label>
+    <label><input type="checkbox" value="doc" /> .doc</label>
   </div>
 
   <div class="info">
@@ -143,8 +159,9 @@
       const query = searchInput.value.trim();
       if (query === "") return;
 
-      const selectedFormats = Array.from(document.querySelectorAll('.formats input[type="checkbox"]:checked'))
-        .map(cb => cb.value);
+      const selectedFormats = Array.from(
+        document.querySelectorAll('.formats input[type="checkbox"]:checked')
+      ).map(cb => cb.value);
 
       if (selectedFormats.length === 0) {
         alert("Selecione pelo menos um tipo de arquivo.");
@@ -188,7 +205,8 @@
       const dorks = selectedFormats.flatMap(format => formatDorks[format] || []);
       const fullQuery = `${query} (${dorks.join(' OR ')})`;
       const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(fullQuery)}`;
-      window.open(searchUrl, "_blank");
+      // Usando noopener noreferrer por segurança
+      window.open(searchUrl, "_blank", "noopener,noreferrer");
     }
 
     searchButton.addEventListener('click', search);
