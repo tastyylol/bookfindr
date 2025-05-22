@@ -1,6 +1,6 @@
 O **BookFindr** é um site simples e direto ao ponto que ajuda os usuários a encontrarem livros de forma rápida e prática. Ideal para quem gosta de leitura e quer descobrir novos títulos com facilidade.
 
-[Clique aqui para visitar o BookFindr](https://seuusuario.github.io/BookFindr/)
+[Clique aqui para visitar o BookFindr](https://tastyylol.github.io/bookfindr/)
 
 ---
 
